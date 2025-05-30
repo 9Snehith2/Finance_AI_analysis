@@ -1,0 +1,50 @@
+version: '3.9'
+
+services:
+  scraper:
+    build:
+      context: ./scraper
+    container_name: scraping_container
+    ports:
+      - "8001:8001"
+
+  summarizer:
+    build:
+      context: ./summarizer
+    container_name: summarizer_container
+    ports:
+      - "8002:8002"
+
+  retriever:
+    build:
+      context: ./retriever
+    container_name: retriever_container
+    ports:
+      - "8003:8003"
+
+  decision:
+    build:
+      context: ./decision
+    container_name: decision_container
+    ports:
+      - "8004:8004"
+
+  orchestrator:
+    build:
+      context: ./orchestrator
+    container_name: orchestrator_container
+    ports:
+      - "8000:8000"
+
+  streamlit:
+    build:
+      context: ./streamlit_app
+    container_name: streamlit_ui
+    ports:
+      - "8501:8501"
+    depends_on:
+      - scraper
+      - summarizer
+      - retriever
+      - decision
+      - orchestrator
